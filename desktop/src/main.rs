@@ -7,6 +7,9 @@ use sdl2::event::Event;
 use chip8_core::*;
 mod display;
 use display::Display;
+mod keyboard;
+use keyboard::key2btn;
+use sdl2::keyboard::Keycode;
 
 const TICKS_PER_FRAME: usize = 10;
 
@@ -33,8 +36,29 @@ fn main() {
 
     'gameloop: loop {
         for event in event_pump.poll_iter() {
-            if let Event::Quit { .. } = event {
-                break 'gameloop;
+            match event {
+                Event::Quit { .. }
+                | Event::KeyDown {
+                    keycode: Some(Keycode::Escape),
+                    ..
+                } => {
+                    break 'gameloop;
+                }
+                Event::KeyDown {
+                    keycode: Some(key), ..
+                } => {
+                    if let Some(k) = key2btn(key) {
+                        chip8.keypress(k, true);
+                    }
+                }
+                Event::KeyUp {
+                    keycode: Some(key), ..
+                } => {
+                    if let Some(k) = key2btn(key) {
+                        chip8.keypress(k, false);
+                    }
+                }
+                _ => (),
             }
         }
 
