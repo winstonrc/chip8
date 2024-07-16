@@ -1,5 +1,3 @@
-use std::{intrinsics::breakpoint, usize};
-
 pub const SCREEN_WIDTH: usize = 64;
 pub const SCREEN_HEIGHT: usize = 32;
 const RAM_SIZE: usize = 4096;
@@ -9,7 +7,6 @@ const NUM_KEYS: usize = 16;
 /// The Chip8’s memory from 0x000 to 0x1FF is reserved, so the ROM instructions must start at
 /// 0x200.
 const START_ADDRESS: u16 = 0x200;
-const FONTSET_START_ADDRESS: u16 = 0x50;
 const FONTSET_SIZE: usize = 80;
 const FONTSET: [u8; FONTSET_SIZE] = [
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -79,6 +76,24 @@ impl Chip8 {
         self.keys = [false; NUM_KEYS];
         self.dt = 0;
         self.st = 0
+    }
+
+    pub fn get_display(&self) -> &[bool] {
+        &self.screen
+    }
+
+    pub fn keypress(&mut self, idx: usize, pressed: bool) {
+        if idx >= 16 {
+            panic!("Index {} is out of bounds! Must be less than 16.", idx);
+        }
+
+        self.keys[idx] = pressed;
+    }
+
+    pub fn load_rom(&mut self, data: &[u8]) {
+        let start = START_ADDRESS as usize;
+        let end = (START_ADDRESS as usize) + data.len();
+        self.ram[start..end].copy_from_slice(data);
     }
 
     pub fn tick(&mut self) {
