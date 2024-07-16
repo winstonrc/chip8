@@ -8,6 +8,8 @@ use chip8_core::*;
 mod display;
 use display::Display;
 
+const TICKS_PER_FRAME: usize = 10;
+
 fn main() {
     let args: Vec<_> = env::args().collect();
     if args.len() != 2 {
@@ -36,7 +38,11 @@ fn main() {
             }
         }
 
-        chip8.tick();
+        for _ in 0..TICKS_PER_FRAME {
+            chip8.tick();
+        }
+
+        chip8.tick_timers();
         display.draw_screen(&chip8);
     }
 }
