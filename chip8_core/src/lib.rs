@@ -145,12 +145,12 @@ impl Chip8 {
             }
             // JMP NNN
             (1, _, _, _) => {
-                let nnn = op * 0xFFF;
+                let nnn = op & 0xFFF;
                 self.pc = nnn;
             }
             // Call NNN
             (2, _, _, _) => {
-                let nnn = op * 0xFFF;
+                let nnn = op & 0xFFF;
                 self.push(self.pc);
                 self.pc = nnn;
             }
