@@ -1,5 +1,7 @@
 # Chip-8 Emulator
 
+Run the emulator in your browser [here](https://winstonrc.github.io/chip8/).
+
 ## Controls
 
 The controls follow a standard mapping and are mapped to the following keys:
@@ -51,6 +53,9 @@ python3 -m http.server
 ```
 
 Finally, browse to the website's address that is being served by the web server in your browser.
+
+## Usage
+
 Click `Browse...` to upload a Chip-8 ROM from your computer.
 
 Have fun!
