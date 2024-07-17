@@ -5,8 +5,11 @@
 The controls follow a standard mapping and are mapped to the following keys:
 
 1 2 3 4
+
 q w e r
+
 a s d f
+
 z x c v
 
 
