@@ -280,7 +280,15 @@ impl Chip8 {
             (0xC, _, _, _) => {
                 let x = digit2 as usize;
                 let nn = (op & 0xFF) as u8;
-                let rng: u8 = rand::random();
+
+                // getrandom is required instead of rand for targeting wasm
+                let mut rng_bytes = [0u8; 1];
+                if let Err(err) = getrandom::getrandom(&mut rng_bytes) {
+                    eprintln!("Error generating random number: {:?}", err);
+                }
+
+                let rng: u8 = rng_bytes[0];
+
                 self.v_reg[x] = rng & nn;
             }
             // DRAW
